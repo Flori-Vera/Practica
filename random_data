@@ -1,0 +1,19 @@
+void setup() {
+  // Start the serial communication
+  Serial.begin(9600);
+}
+
+void loop() {
+  // Generate random temperature and humidity values
+  float temperature = random(200, 400) / 10.0; // Generate a random temperature between 20.0 and 40.0
+  float humidity = random(400, 800) / 10.0; // Generate a random humidity between 40.0 and 80.0
+
+  // Create a JSON-like string
+  String data = "{\"t\": " + String(temperature) + ", \"h\": " + String(humidity) + "}";
+
+  // Send the data over the serial connection
+  Serial.println(data);
+
+  // Wait for 10 seconds before sending the next data
+  delay(10000);
+}
