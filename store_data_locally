@@ -1,0 +1,18 @@
+import os
+import json
+from datetime import datetime
+
+candidate_name = "prenume-nume" % here i replaecd with my name
+directory = f"./{candidate_name}"
+if not os.path.exists(directory):
+    os.makedirs(directory)
+
+def store_locally(data):
+    timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
+    filename = f"{directory}/data_{timestamp}.json"
+    with open(filename, 'w') as file:
+        json.dump(data, file)
+
+# Example data
+data = {"temperature": 25.5, "humidity": 60}
+store_locally(data)
