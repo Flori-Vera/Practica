@@ -1,0 +1,21 @@
+from flask import Flask, request, jsonify
+
+app = Flask(__name__)
+
+# Endpoint to receive GET request from IFTTT
+@app.route('/temperature', methods=['GET'])
+def get_temperature():
+    # Code to fetch current temperature and humidity
+    temperature = 25  # Replace with actual temperature fetch logic
+    humidity = 50  # Replace with actual humidity fetch logic
+
+    # Prepare response in JSON format
+    response = {
+        'temperature': temperature,
+        'humidity': humidity
+    }
+
+    return jsonify(response)
+
+if __name__ == '__main__':
+    app.run(debug=True)
