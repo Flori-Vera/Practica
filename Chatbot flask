@@ -1,29 +1,35 @@
 from flask import Flask, jsonify
 import serial
-import time
 import json
+import threading
 
 app = Flask(__name__)
 
 # Configure the serial port and baud rate
-ser = serial.Serial('/dev/ttyUSB0', 9600)  # Update with your actual serial port
+ser = serial.Serial('COM5', 9600)  # Update with your actual serial port
 
-def get_serial_data():
-    """Read data from the serial port and return it as a JSON object."""
+# Global variable to store the latest data
+latest_data = {'t': 25, 'h': 50}
+
+def read_serial_data():
+    """Continuously read data from the serial port and update latest_data."""
+    global latest_data
     while True:
         if ser.in_waiting > 0:
             line = ser.readline().decode('utf-8').strip()
             try:
                 data = json.loads(line)
-                return data
+                latest_data = data
             except json.JSONDecodeError:
                 continue
 
+# Start the serial reading thread
+threading.Thread(target=read_serial_data, daemon=True).start()
+
 @app.route('/temperature', methods=['GET'])
 def get_temperature():
-    data = get_serial_data()
-    temperature = data.get('t', 25)  # Default to 25 if no data
-    humidity = data.get('h', 50)  # Default to 50 if no data
+    temperature = latest_data.get('t', 25)  # Default to 25 if no data
+    humidity = latest_data.get('h', 50)  # Default to 50 if no data
 
     # Prepare response in JSON format
     response = {
