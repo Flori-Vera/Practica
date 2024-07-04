@@ -1,19 +1,40 @@
-void setup() {
-  // Start the serial communication
-  Serial.begin(9600);
-}
+import serial
+import time
+import json
+import paho.mqtt.client as mqtt
 
-void loop() {
-  // Generate random temperature and humidity values
-  float temperature = random(200, 400) / 10.0; // Generate a random temperature between 20.0 and 40.0
-  float humidity = random(400, 800) / 10.0; // Generate a random humidity between 40.0 and 80.0
+# MQTT settings
+mqtt_broker = "mqtt.beia-telemetrie.ro"
+mqtt_topic = "/training/device/florentina-vera/data"  
 
-  // Create a JSON-like string
-  String data = "{\"t\": " + String(temperature) + ", \"h\": " + String(humidity) + "}";
+# Serial settings
+serial_port = "COM5"  
+baud_rate = 9600
 
-  // Send the data over the serial connection
-  Serial.println(data);
+# Initialize the serial connection
+ser = serial.Serial(serial_port, baud_rate, timeout=1)
+time.sleep(2)  # Wait for the connection to establish
 
-  // Wait for 10 seconds before sending the next data
-  delay(10000);
-}
+# Initialize the MQTT client
+client = mqtt.Client()
+client.connect(mqtt_broker, 1883, 60)
+
+def publish_to_mqtt(data):
+    client.publish(mqtt_topic, data)
+    print(f"Published: {data}")
+
+try:
+    while True:
+        if ser.in_waiting > 0:
+            # Read a line of data from the serial port
+            line = ser.readline().decode('utf-8').rstrip()
+            print(f"Received: {line}")
+
+            # Publish the data to the MQTT broker
+            publish_to_mqtt(line)
+except KeyboardInterrupt:
+    print("Program interrupted")
+finally:
+    # Clean up
+    ser.close()
+    client.disconnect()
