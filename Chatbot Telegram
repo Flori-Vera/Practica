@@ -5,7 +5,7 @@ from influxdb import InfluxDBClient
 import logging
 
 # Configurare token Telegram
-TELEGRAM_TOKEN = '7122426418:AAFc8DzjhPNW9b7CCAe5rElWQ7ZLIyN4ULU'
+TELEGRAM_TOKEN = 'here is the api i added, cannot give this information'
 
 # Configurare client InfluxDB
 INFLUXDB_URL = 'localhost'
