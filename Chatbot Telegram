@@ -11,8 +11,6 @@ TELEGRAM_TOKEN = 'here is the api i added, cannot give this information'
 INFLUXDB_URL = 'localhost'
 INFLUXDB_PORT = 8086
 INFLUXDB_DBNAME = 'SensorsData'
-#INFLUXDB_USER = 'crina'
-#INFLUXDB_PASSWORD = 'crina'
 
 # Configurare logger
 logging.basicConfig(
