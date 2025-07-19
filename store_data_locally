@@ -2,7 +2,7 @@ import os
 import json
 from datetime import datetime
 
-candidate_name = "prenume-nume" % here i replaecd with my name
+candidate_name = "prenume-nume" % here i replaced with my name
 directory = f"./{candidate_name}"
 if not os.path.exists(directory):
     os.makedirs(directory)
